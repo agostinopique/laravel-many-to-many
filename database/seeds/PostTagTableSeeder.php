@@ -13,7 +13,7 @@ class PostTagTableSeeder extends Seeder
      */
     public function run()
     {
-        for($i = 0; $i < 20; $i++){
+        for($i = 0; $i < 40; $i++){
             $post = Post::inRandomOrder()->first();
 
             $tag_id = Tag::inRandomOrder()->first()->id;

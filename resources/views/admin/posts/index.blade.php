@@ -15,6 +15,12 @@
             <div class="card-body">
                 <h5 class="card-title">{{ $post->title }}</h5>
                 <h6 class="card-subtitle mb-2 text-muted">{{ $post->description }}</h6>
+                @forelse ($post->tags as $tag)
+                    {{-- @dd($post->tags) --}}
+                    <span class="badge badge-pill badge-primary">{{$tag->name}}</span>
+                @empty
+                    <span>--</span>
+                @endforelse
 
                 @if($post->category)
                     <p>Category: {{ $post->category->category }}</p>

@@ -31,7 +31,8 @@ class PostController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('admin.posts.create', compact('categories'));
+        $tags = Tag::all();
+        return view('admin.posts.create', compact('categories', 'tags'));
     }
 
     /**
@@ -48,6 +49,9 @@ class PostController extends Controller
         $post->fill($new_post);
         $post->slug = Post::generateSlug($new_post['title']);
         $post->save();
+        if(array_key_exists('tags', $new_post)){
+            $post->tags()->attach($new_post['tags']);
+        }
         return redirect()->route('admin.post.index');
     }
 
@@ -76,8 +80,9 @@ class PostController extends Controller
     {
         $post = Post::find($id);
         $categories = Category::all();
+        $tags = Tag::all();
         if($post){
-            return view('admin.posts.edit', compact('post', 'categories'));
+            return view('admin.posts.edit', compact('post', 'categories', 'tags'));
         };
         abort(404);
 
@@ -97,6 +102,12 @@ class PostController extends Controller
         $post->slug = Post::generateSlug($new_post['title']);
 
         $post->update($new_post);
+
+        if(array_key_exists('tags', $new_post)){
+            $post->tags()->sync($new_post['tags']);
+        } else {
+            $post->tags()->detach();
+        }
 
         return redirect()->route('admin.post.show', $post);
 

@@ -99,7 +99,9 @@ class PostController extends Controller
     {
         $new_post = $request->all();
 
-        $post->slug = Post::generateSlug($new_post['title']);
+        if($new_post['title'] != $post->title){
+            $post->slug = Post::generateSlug($new_post['title']);
+        };
 
         $post->update($new_post);
 
